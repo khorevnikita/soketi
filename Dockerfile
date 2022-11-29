@@ -33,4 +33,4 @@ WORKDIR /app
 
 EXPOSE 6001
 
-ENTRYPOINT ["node", "/app/bin/server.js", "start"]
+ENTRYPOINT ["node", "/app/bin/server.js", "start","--config=/app/env.json"]
