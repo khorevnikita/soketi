@@ -1,6 +1,6 @@
 ARG VERSION=lts
 
-FROM --platform=$BUILDPLATFORM node:$VERSION-alpine as build
+FROM node:16 as build
 
 ENV PYTHONUNBUFFERED=1
 
@@ -23,7 +23,7 @@ RUN apk add --no-cache --update git python3 gcompat ; \
     mkdir -p /app ; \
     cp -r bin/ dist/ node_modules/ LICENSE package.json package-lock.json README.md /app/
 
-FROM --platform=$BUILDPLATFORM node:$VERSION-alpine
+FROM node:16
 
 LABEL maintainer="Renoki Co. <alex@renoki.org>"
 
@@ -32,5 +32,7 @@ COPY --from=build /app /app
 WORKDIR /app
 
 EXPOSE 6001
+
+COPY env.json /app/env.json
 
 ENTRYPOINT ["node", "/app/bin/server.js", "start","--config=/app/env.json"]
